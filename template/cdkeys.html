@@ -1,0 +1,88 @@
+{template 'common/header'}
+<style>
+  .form-control {
+    width: 120px !important;
+  }
+</style>
+<form class="form-inline well">
+  <input type="hidden" name="c" value="site" />
+  <input type="hidden" name="a" value="entry" />
+  <input type="hidden" name="do" value="{$_GPC['do']}" />
+  <input type="hidden" name="m" value="{$_GPC['m']}" />
+
+  <div class="form-group">
+    <label for="s_id">密钥ID</label>
+    <input type="text" class="form-control" id="s_id" name="s_id" value="{$_GPC['s_id']}" />
+  </div>
+  <div class="form-group">
+    <label for="s_cdkey">密钥号</label>
+    <input type="text" class="form-control" style="width: 200px !important" id="s_cdkey" name="s_cdkey"
+      value="{$_GPC['s_cdkey']}" />
+  </div>
+  <div class="form-group">
+    <label for="s_days">兑换天数</label>
+    <input type="text" class="form-control" id="s_days" name="s_days" value="{$_GPC['s_days']}" />
+  </div>
+  <div class="form-group">
+    <label for="s_userid">激活用户ID</label>
+    <input type="text" class="form-control" id="s_userid" name="s_userid" value="{$_GPC['s_userid']}" />
+  </div>
+  <div class="form-group">
+    <select name="s_used" class="form-control">
+      <option value="">全部状态</option>
+      <option value="1" {if $_GPC['s_used']=='1' }selected{/if}>已使用</option>
+      <option value="2" {if $_GPC['s_used']=='2' }selected{/if}>未使用</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-default">搜索</button>
+  <a href="{php echo $this->createWebUrl('exportCdkeys')}" class="btn btn-default pull-right">导出可用密钥</a>
+  <a href="{php echo $this->createWebUrl('addCdkey')}" class="btn btn-default pull-right">创建密钥</a>
+</form>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>密钥ID</th>
+      <th>密钥号</th>
+      <th>兑换天数</th>
+      <th>创建时间</th>
+      <th>激活会员ID</th>
+      <th>激活时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop $result $index $item}
+    <tr>
+      <td>{$item['id']}</td>
+      <td>{$item['cdkey']}</td>
+      <td>{$item['days']}</td>
+      <td>{$item['createtime']}</td>
+      <td>{$item['userid']}</td>
+      <td>{$item['usetime']}</td>
+      <td>
+        <a href="<?php echo $this->createWebUrl('delCdkey', array('id' => $item['id']))?>"
+          class="btn btn-default">删除</a>
+      </td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+<nav>
+  <ul class="pager">
+    {if $previous}
+    <li class="previous">
+      <a href="{$previous}"><span aria-hidden="true">&larr;</span>上一页</a>
+    </li>
+    {/if}
+    <li>当前第{$page}页/共{$total}条数据</li>
+    {if $next}
+    <li class="next">
+      <a href="{$next}">下一页<span aria-hidden="true">&rarr;</span></a>
+    </li>
+    {/if}
+  </ul>
+</nav>
+
+{template 'common/footer'}

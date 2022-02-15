@@ -1,0 +1,77 @@
+{template 'common/header'}
+<style>
+  /* .content {
+    font-size: 12px;
+  } */
+  .bannerimg {
+    height: 5rem;
+  }
+</style>
+<form class="form-inline well">
+  <input type="hidden" name="c" value="site" />
+  <input type="hidden" name="a" value="entry" />
+  <input type="hidden" name="do" value="{$_GPC['do']}" />
+  <input type="hidden" name="m" value="{$_GPC['m']}" />
+
+  <div class="form-group">
+    <label for="s_id">会员ID</label>
+    <input type="text" class="form-control" id="s_id" name="s_id" value="{$_GPC['s_id']}" />
+  </div>
+  <div class="form-group">
+    <label for="s_openid">OpenID</label>
+    <input type="text" class="form-control" id="s_openid" name="s_openid" value="{$_GPC['s_openid']}" />
+  </div>
+
+  <button type="submit" class="btn btn-default">搜索</button>
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>会员ID</th>
+      <th>微信昵称</th>
+      <th>微信头像</th>
+      <th>OpenID</th>
+      <th>微信小程序数量</th>
+      <th>链接数量</th>
+      <th>创建时间</th>
+      <th>会员状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop $result $index $item}
+    <tr>
+      <td>{$item['id']}</td>
+      <td>{$item['nickname']}</td>
+      <td><img src="{$item['avatar']}" style="width: 40px; height: 40px; border-radius: 100%; overflow: hidden;"></td>
+      <td>{$item['openid']}</td>
+      <td>{$item['wxapps']}</td>
+      <td>{$item['links']}</td>
+      <td>{php echo date("Y-m-d H:i:s", $item['createtime'])}</td>
+      <td>{$item['vip']}</td>
+      <td>
+        <a href="<?php echo $this->createWebUrl('setvip', array('id' => $item['id']))?>"
+          class="btn btn-default">会员设置</a>
+        <a href="<?php echo $this->createWebUrl('personal', array('id' => $item['id']))?>"
+          class="btn btn-default">专属域名</a>
+      </td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+<nav>
+  <ul class="pager">
+    {if $previous}
+    <li class="previous">
+      <a href="{$previous}"><span aria-hidden="true">&larr;</span>上一页</a>
+    </li>
+    {/if}
+    <li>当前第{$page}页/共{$total}条数据</li>
+    {if $next}
+    <li class="next">
+      <a href="{$next}">下一页<span aria-hidden="true">&rarr;</span></a>
+    </li>
+    {/if}
+  </ul>
+</nav>
+{template 'common/footer'}

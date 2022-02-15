@@ -1,0 +1,55 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>功能说明</h4>
+    <p id="helptext">
+      微信内默认是无法使用Scheme唤起微信小程序功能的，因此为了在微信浏览器内访问小程序，需要通过H5页面按钮唤起。此功能为微信公众号的接口，并非微信小程序的接口。所以如果通过“微信小程序”或“非认证服务号”运营此平台，需要借用微擎上已绑定的“认证服务号”的权限。需要注意：被借权的认证服务号需要设置JS安全域名！！
+    </p>
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">鉴权公众号</label>
+      <div class="col-sm-9 col-xs-12">
+        {if $uself}
+        <p class="form-control-static text-danger">无需借权</p>
+        {else}
+        <select class="form-control" name="compat_account">
+          {loop $mps $key $mp}
+          <option value="">关闭功能</option>
+          <option value="{$mp['uniacid']}" {if $config['compat_account']==$mp['uniacid']}selected{/if}>{$mp['name']} [
+            {$mp['account']} ]</option>
+          {/loop}
+        </select>
+        <span class="help-block">选项说明：此功能对被借权公众号无副作用，可任意选择。</span>
+        {/if}
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">JS安全域名</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="jssafe_domain" class="form-control" value="{$config['jssafe_domain']}" />
+        <p class="help-block">注意：此项必填！填写格式：“123.abc.com”，不要带“http”开头，结尾也不需要“/”。JS安全域名<span
+            class="text-danger">不建议</span>设置为微擎主域名(<span
+            class="text-danger">以免被微信封主域名</span>)，并在被借权的微信认证服务号后台设置JS安全域名与此处一致，若设置错误，落地页“打开小程序按钮”不显示！</p>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

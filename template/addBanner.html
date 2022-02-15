@@ -1,0 +1,56 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">标题</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="title" class="form-control" value="{$banner['title']}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片</label>
+      <div class="col-sm-9 col-xs-12">
+        <?php echo tpl_form_field_image('image', $banner['image']);
+        ?>
+        <span class="help-block">图片宽度参考：750*300。</span>
+      </div>
+    </div>
+    <!-- <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">跳转URL</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="url" class="form-control" value="{$banner['url']}" />
+        <span class="help-block">注：选填项目。若不填写则用户端点击banner广告无跳转动作。</span>
+      </div>
+    </div> -->
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">是否显示</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="enableon">
+          <input type="radio" name="enable" id="enableon" value="1" {if $banner["enable"]} checked {/if}> 展示
+        </label>
+        <label class="radio-inline" for="enableoff">
+          <input type="radio" name="enable" id="enableoff" value="0"> 隐藏
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">排序权重</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="weigh" class="form-control" value="{$banner['weigh']}" />
+        <span class="help-block">注：数值越大越靠前。</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

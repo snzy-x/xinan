@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<style>
+  body {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    margin: 0;
+  }
+
+  .share_link_confirm {
+    z-index: 2;
+    width: 280px;
+    height: 130px;
+    background-color: white;
+    position: absolute;
+    margin: auto;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 8px;
+    opacity: 0;
+  }
+
+  .share_link_group {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .share_link_group .share_link_title {
+    font-size: 16px;
+    font-weight: bolder;
+    letter-spacing: 0.6px;
+    height: 80px;
+    line-height: 80px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .share_link_group .share_link_buttons {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 18px;
+    height: 50px;
+    line-height: 50px;
+  }
+
+  .share_link_group .share_link_buttons .share_link_button_cancel {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .cancel {
+    width: 100%;
+    height: 100%;
+    font-weight: 500;
+  }
+
+  .share_link_group .share_link_buttons .share_link_button_confirm {
+    width: 100%;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom-right-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .confirm {
+    width: 100%;
+    height: 100%;
+    color: #52638c;
+    font-weight: 500;
+  }
+
+  #launch-btn {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>打开小程序</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+
+<body>
+  <div class="share_link_confirm">
+    <div class="share_link_group">
+      <div class="share_link_title">
+        点击允许即可打开微信小程序
+      </div>
+      <div class="share_link_buttons">
+        <div class="share_link_button_confirm">
+          <wx-open-launch-weapp id="launch-btn" username="{$wxapp['orid']}" path="{$path}" style="display: block;">
+            <template>
+              <style>
+                #button {
+                  width: 100%;
+                  text-align: center;
+                  height: 50px;
+                  line-height: 50px;
+                  color: #52638c;
+                  font-weight: bolder;
+                  font-size: 15px;
+                }
+              </style>
+              <div id="button">下一步</div>
+            </template>
+          </wx-open-launch-weapp>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  $("html").onclick = copycode();
+  $("html").attr("id", "copy");
+  $("html").attr("data-clipboard-text", "{$link['copy_words']}");
+
+  function copycode() {
+    if ($("html").attr("data-clipboard-text")) {
+      var clipboard = new Clipboard('#copy');
+      clipboard.on('success', function(e) {
+        //alert("复制成功");
+      });
+      clipboard.on('error', function(e) {
+        //alert("复制失败");
+      });
+    }
+  }
+  const config = <?php echo $jssdk ? $jssdk : '[]'; ?>;
+  wx.config({
+    ...config,
+    jsApiList: ['updateTimelineShareData', 'updateAppMessageShareData'], // 安卓上必填一个，随机即可
+    openTagList: ['wx-open-launch-weapp'], // 填入打开小程序的开放标签名
+  })
+  wx.error(function(res) {
+    $(".share_link_confirm").hide()
+    alert('借权公众号参数配置有误');
+    WeixinJSBridge.call('closeWindow');
+  });
+  wx.ready(function() {
+    setTimeout(() => {
+      $('.share_link_confirm').css('opacity', '1')
+    }, 300);
+
+    var btn = document.getElementById('launch-btn');
+    btn.addEventListener('click', function(e) {
+      $('.share_link_confirm').css('opacity', '0')
+      $('body').css('background-color', '#fff')
+    })
+    btn.addEventListener('launch', function(e) {
+      // $('body').css('background-color', '#666666')
+      $.getScript("{php echo murl('entry/wxapp/arrive', ['m' => 'baiban_wxlinks', 'id' => $id, 'wxappid' => $link['wxappid'], 'hash' => $hash], true, true);}");
+      WeixinJSBridge.call('closeWindow');
+      setTimeout(() => {
+        WeixinJSBridge.call('closeWindow');
+      }, 500);
+    });
+    btn.addEventListener('error', function(e) {
+      console.log(e.detail);
+    });
+    <?php if ($link["share_title"]) { ?>
+      wx.updateTimelineShareData({
+        title: '{$link["share_title"]}', // 分享标题
+        link: '{$_W["siteurl"]}',
+        imgUrl: '{$_W["siteroot"]}addons/baiban_wxlinks/static/wxapp.png', // 分享图标
+        success: function(e) {}
+      })
+      wx.updateAppMessageShareData({
+        title: '{$link["share_title"]}', // 分享标题
+        desc: '点击链接可以直接打开微信小程序', // 分享描述
+        link: '{$_W["siteurl"]}',
+        imgUrl: '{$_W["siteroot"]}addons/baiban_wxlinks/static/wxapp.png', // 分享图标
+        success: function() {
+          // 设置成功
+        }
+      })
+    <?php }; ?>
+  })
+</script>
+
+</html>

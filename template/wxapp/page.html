@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" />
+  <title>打开微信小程序</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+    }
+
+    .message {
+      padding-top: 30vh;
+      margin: 0 auto;
+      display: none;
+      text-align: center;
+    }
+
+    .poster {
+      margin: 0;
+      display: none;
+      text-align: center;
+    }
+
+    .posterimg {
+      width: 100%;
+    }
+
+    .imggroup {
+      display: flex;
+      justify-content: center;
+    }
+
+    .img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .img2 {
+      height: 50px;
+      margin: 0 30px;
+    }
+
+    .icon {
+      max-width: 300px;
+    }
+
+    .text {
+      margin-top: 10px;
+    }
+
+    #launch-btn {
+      width: 200px;
+      opacity: 0;
+      margin: 0 auto;
+      display: block;
+    }
+
+    #clickbtn {
+      display: block;
+      line-height: 40px;
+      margin: 20px auto;
+      margin-top: 20px;
+      width: 60%;
+      height: 40px;
+      text-decoration: none;
+      background: #dcf3e9;
+      border-radius: 20px;
+      align-items: center;
+      font-weight: bold;
+      color: #2ebfa7;
+    }
+
+    #advimg {
+      width: 100%;
+      position: fixed;
+      max-height: 15vh;
+      bottom: 0;
+    }
+
+    @media screen and (min-width: 750px) {
+      #advimg {
+        width: 50vw;
+        max-height: 15vh;
+        left: 25vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <div class="message" id="success">
+      <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/success.png" class="icon" />
+      <div class="text">已成功打开小程序</div>
+      <div class="text">若无反应，尝试点击下方按钮</div>
+      <a href="{$link['openlink']}" id="clickbtn">进入小程序</a>
+    </div>
+    <div class="message" id="warning">
+      <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/warning.png" class="icon" />
+      <div class="text">请使用微信之外浏览器访问</div>
+    </div>
+    <div class="message" id="loading">
+      <div class="imggroup">
+        <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/link.png" class="img" />
+        <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/loading.gif" class="img2" />
+        <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/wxapp.png" class="img" />
+      </div>
+      <div class="text">正在启动微信小程序</div>
+    </div>
+    <div class="message" id="fail">
+      <img src="{$_W['siteroot']}addons/baiban_wxlinks/static/error.png" class="icon" />
+      <div class="text" id="fail_txt"></div>
+    </div>
+    <div class="message" id="pc">
+      <img src="" class="icon qrcode" />
+      <div class="text" id="pc_txt">请使用微信扫描二维码</div>
+    </div>
+    {if $link['app_top']}
+    <div class="poster" id="wechat">
+      <img src="{$link['app_top']}" class="posterimg" />
+      {else}
+      <div class="message" id="wechat">
+        <p><img src="{$_W['siteroot']}addons/baiban_wxlinks/static/wxa.png" class="icon" /></p>
+        {/if}
+        <div class="text" id="wechat_txt">组件初始化中……</div>
+      </div>
+      <wx-open-launch-weapp id="launch-btn" username="{$wxapp['orid']}" path="{$path}">
+        <template>
+          <style>
+            button {
+              width: 160px;
+              height: 45px;
+              text-align: center;
+              font-size: 17px;
+              display: block;
+              margin: 0 auto;
+              padding: 8px 24px;
+              border: none;
+              border-radius: 4px;
+              background-color: #07c160;
+              color: #fff;
+            }
+          </style>
+          <button>打开小程序</button>
+        </template>
+      </wx-open-launch-weapp>
+    </div>
+    <?php if ($advpage) { ?>
+      <a href="{$advpageurl}"><img src="{$advpage}" id="advimg"></a>
+    <?php }; ?>
+    <script></script>
+</body>
+
+<script type="application/javascript">
+  var json_outer = <?php echo json_encode($link, 256); ?>;
+  if (json_outer.copy_words) {
+    $("html").onclick = copycode();
+    $("html").attr("id", "copy");
+    $("html").attr("data-clipboard-text", json_outer.copy_words);
+
+    function copycode() {
+      var clipboard = new Clipboard('#copy');
+      clipboard.on('success', function(e) {
+        //alert("复制成功");
+      });
+      clipboard.on('error', function(e) {
+        //alert("复制失败");
+      });
+    }
+  }
+  var ua = navigator.userAgent.toLowerCase();
+  var isWXWork = ua.match(/wxwork/i) == "wxwork";
+  var isWeixin = !isWXWork && ua.match(/micromessenger/i) == "micromessenger";
+  var error = "{$error}";
+  var compat = <?php echo $jssdk ? 'true' : 'false'; ?>;
+  var ori_url = "{$ori_url}";
+  $(function() {
+
+    if (error) {
+      $("#fail").css("display", "block");
+      $("#fail_txt").text(error);
+    } else if (isWeixin) {
+      if (compat) {
+        if (ori_url) {
+          window.location.href = ori_url;
+          return;
+        }
+
+        $("#loading").css("display", "block");
+        const config = <?php echo $jssdk ? $jssdk : '[]'; ?>;
+        wx.config({
+          ...config,
+          jsApiList: ['updateTimelineShareData'], // 安卓上必填一个，随机即可
+          openTagList: ['wx-open-launch-weapp'], // 填入打开小程序的开放标签名
+        })
+        wx.ready(function() {
+          $("#wechat_txt").hide();
+          <?php if ($link["share_title"]) { ?>
+            wx.updateTimelineShareData({
+              title: '{$link["share_title"]}', // 分享标题
+              link: '{$_W["siteurl"]}',
+              imgUrl: '{$_W["siteroot"]}addons/baiban_wxlinks/static/wxapp.png', // 分享图标
+              success: function(e) {}
+            })
+          <?php }; ?>
+        })
+        setTimeout(function() {
+          $("#loading").hide();
+          $("#wechat").css("display", "block");
+          $("#launch-btn").css("opacity", 1);
+
+          // $.getScript("{php echo murl('entry/wxapp/tongji', ['m' => 'baiban_wxlinks', 'id' => $id], true, true);}");
+        }, 500);
+      } else {
+        $("#warning").css("display", "block");
+      }
+    } else {
+      var isMobile = false;
+      var isDesktop = false;
+      if (
+        navigator.userAgent.match(
+          /(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|IEMobile)/i
+        )
+      ) {
+        isMobile = true;
+      } else {
+        isDesktop = true;
+      }
+
+      if (isDesktop) {
+        if (compat) {
+          // 在 pc 上则给提示引导到手机端打开
+          $("#pc").css("display", "block");
+          $(".qrcode").attr('src', "{php echo murl('entry/wxapp/qrcode', ['m' => 'baiban_wxlinks', 'id' => $id, 'realdomain' => 1], true, true);}");
+        } else {
+          $("#fail").css("display", "block");
+          $("#fail_txt").text("请使用手机浏览器访问");
+        }
+      } else {
+        $.getScript("{php echo murl('entry/wxapp/arrive', ['m' => 'baiban_wxlinks', 'id' => $id, 'wxappid' => $link['wxappid'], 'hash' => $hash], true, true);}");
+        $("#loading").css("display", "block");
+        setTimeout(function() {
+          $("#loading").hide();
+          $("#success").css("display", "block");
+          location.href = json_outer.openlink;
+        }, 500);
+      }
+    }
+  });
+</script>
+<script>
+  var btn = document.getElementById('launch-btn');
+  btn.addEventListener('launch', function(e) {
+    $.getScript("{php echo murl('entry/wxapp/arrive', ['m' => 'baiban_wxlinks', 'id' => $id, 'wxappid' => $link['wxappid'], 'hash' => $hash], true, true);}");
+  });
+  btn.addEventListener('error', function(e) {
+    console.log('fail', e.detail);
+  });
+</script>
+
+</html>

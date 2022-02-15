@@ -1,0 +1,62 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>模块使用帮助</h4>
+    <p id="helptext">如有任何问题，请加联系客服反馈。</p>
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">帮助中心跳转网址</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="helpurl" class="form-control" value="{php echo $config['helpurl']}" />
+        <span class="help-block">注意：请添加此链接的域名到微信小程序的业务域名列表！</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接到期跳转网址</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="expirejump" class="form-control" value="{php echo $config['expirejump']}" />
+        <span
+          class="help-block">说明：用户创建的链接到期后，访问用户生成的链接默认会提示链接到期。设置此项后，用户访问过期链接将会自动跳转到此网址！这里可以换成换成自己的打开小程序链接，也可以换成其他推广广告页。</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">客服联系方式（微信/QQ/电话等）</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="contact" class="form-control" value="{php echo $config['contact']}" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">新版H5落地页</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="newh5on">
+          <input type="radio" name="newh5" id="newh5on" value="1" {if $config['newh5']} checked {/if}>
+          用新版
+        </label>
+        <label class="radio-inline" for="newh5off">
+          <input type="radio" name="newh5" id="newh5off" value="" {if !$config['newh5']} checked {/if}>
+          用旧版
+        </label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

@@ -1,0 +1,46 @@
+{template 'common/header'}
+<style>
+  /* .content {
+    font-size: 12px;
+  } */
+  .bannerimg {
+    height: 5rem;
+  }
+</style>
+<div class="form-inline well">
+
+  <a href="{php echo $this->createWebUrl('addBanner')}" class="btn btn-default">添加Banner</a>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>图片</th>
+      <!-- <th>跳转URL</th> -->
+      <th>是否显示</th>
+      <th>权重</th>
+      <th>创建时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    {loop $result $index $item}
+    <tr>
+      <td>{$item['title']}</td>
+      <td><img class="bannerimg" src="{$item['image']}"></td>
+      <!-- <td>{$item['url']}</td> -->
+      <td>{if $item['enable']} 显示 {else} 隐藏 {/if}</td>
+      <td>{$item['weigh']}</td>
+      <td>{php echo date("Y-m-d H:i:s", $item['createtime'])}</td>
+      <td>
+        <a href="<?php echo $this->createWebUrl('addBanner', array('id' => $item['id']))?>"
+          class="btn btn-default">编辑</a>
+        <a href="<?php echo $this->createWebUrl('delBanner', array('id' => $item['id']))?>"
+          class="btn btn-default">删除</a>
+      </td>
+    </tr>
+    {/loop}
+  </tbody>
+</table>
+
+{template 'common/footer'}

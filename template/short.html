@@ -1,0 +1,37 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div role="alert" class="alert alert-warning alert-dismissible fade in">
+      <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+        <span aria-hidden="true">×</span>
+      </button>
+      <h4>功能说明</h4>
+      <p id="helptext">微擎默认的路由参数非常长，因此生成的链接长度也很长，在网络或者短信分发传播的时候，很容易受制于字数限制。开启此功能后，可以大大缩短生成的链接参数长度。</p>
+      <p>开启之前示例：http://abc.com/app/index.php?i=1&c=entry&a=wxapp&do=page&m=baiban_wxlinks&id=1</p>
+      <p>开启之后示例：http://abc.com/s/?qxwb</p>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">超短链接开关</label>
+      <div class="col-sm-9 col-xs-12">
+        {if $config['short']}
+        <a href="{php echo $this->createWebUrl('shortoff');}" class="btn btn-danger">关闭</a>
+        {else}
+        <a href="{php echo $this->createWebUrl('shorton');}" class="btn btn-primary">开启</a>
+        {/if}
+        <span class="help-block">注意：开启短链接功能后，将会在微擎根目录下新建名为"s"的目录，并在此目录下写入index.php文件。请确保服务器拥有目录读写权限！</span>
+      </div>
+    </div>
+
+    <!-- <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div> -->
+  </form>
+</div>
+
+{template 'common/footer'}

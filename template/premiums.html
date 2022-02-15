@@ -1,0 +1,107 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>功能说明</h4>
+    <p id="helptext">平台会员目前分为两种：体验会员、正式会员。</p>
+    <p>用户首次登陆平台时自动注册为体验会员，体验会员的体验天数可在后台设置。超过体验天数后，体验会员将不能创建编辑链接。体验会员创建的链接，有效期也由后台设置。</p>
+    <p>正式会员创建的链接，有效期与正式会员到期时间一致。正式会员到期后，也将自动退回体验会员。体验时间依旧从注册之日起计算，体验天数不因购买正式会员而延期。</p>
+  </div>
+
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div class="panel panel-default">
+      <div class="panel-heading">体验会员</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">体验天数</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="freedays" class="form-control"
+              value="{php echo $config['premiums']['freedays']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接有效天数</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="freeexpire" class="form-control"
+              value="{php echo $config['premiums']['freeexpire']}" />
+            <span class="help-block">说明：免费期间创建的链接，在用户成为正式会员后，链接到期时间自动延长为正式会员截止时间。</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接个数上限</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="freelimit" class="form-control"
+              value="{php echo $config['premiums']['freelimit']}" />
+            <span class="help-block">说明：此限制为链接同时存在上限数，并不是历史创建上限数。之前创建的链接被删除掉之后，若链接数少于此限制，仍可继续创建链接。</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">体验会员权益说明</label>
+          <div class="col-sm-9 col-xs-12">
+            <textarea class="form-control" name="freeright"
+              rows="5">{php echo $config['premiums']['freeright']}</textarea>
+            <span class="help-block">一条一行！！！用户添加链接时，会显示此内容，与正式会员权益形成对比，吸引用户付费购买正式会员。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">正式会员</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接个数上限</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="viplimit" class="form-control"
+              value="{php echo $config['premiums']['viplimit']}" />
+            <span class="help-block">不填留空则代表无限制。</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">自动复制截留口令功能</label>
+          <div class="col-sm-9 col-xs-12">
+            {if $buy_copywords}
+            <label class="radio-inline" for="vipcopywords1">
+              <input type="radio" name="vipcopywords" id="vipcopywords1" value="1" {if
+                $config['premiums']['vipcopywords']} checked {/if}> 开放
+            </label>
+            <label class="radio-inline" for="vipcopywords2">
+              <input type="radio" name="vipcopywords" id="vipcopywords2" value="" {if
+                !$config['premiums']['vipcopywords']} checked {/if}> 禁用
+            </label>
+            <span
+              class="help-block">付费会员创建的链接允许绑定口令信息，当访客打开链接时，会自动向设备剪切板内写入一段文本（比方说淘口令、抖音口令、拼多多口令等）。此功能可能涉嫌违规，默认不启用。请谨慎使用。</span>
+            <span
+              class="help-block">根据浏览器安全规范，只有用户对页面进行点击操作，才能向剪切板中写入内容，所以并非用户打开链接均能保证写入剪切板，综合有效率约为50%。通常需要小程序作为跳板二次跳转的基本上可以写入（比如智慧链接获取二维码等。点击“获取XXX信息”按钮时会写入到剪切板，并且只有第一次点击才会写入）。不走小程序二次跳转的，当且只当用户对浏览器内大部分区域进行点击后才可写入剪切板（微信内“点击唤起小程序”，“下一步”等按钮点击无效）。建议大家自己多多测试，不能因此作为退款或差评理由。</span>
+            {else}
+            <span class="form-control-static">您尚未购买自动复制截留口令插件，请前往商城<a href="https://s.w7.cc/module-29941.html"
+                class="btn btn-success">购买自动复制截留口令插件</a></span>
+            {/if}
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">正式会员权益说明</label>
+          <div class="col-sm-9 col-xs-12">
+            <textarea class="form-control" name="vipright"
+              rows="5">{php echo $config['premiums']['vipright']}</textarea>
+            <span class="help-block">一条一行！！！用户添加链接时，会显示此内容吸引用户付费购买会员。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

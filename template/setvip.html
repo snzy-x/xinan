@@ -1,0 +1,55 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="stopvip" id="stopvip" value="0">
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">会员ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <p class="form-control-static">{$user['id']}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">OpenID</label>
+      <div class="col-sm-9 col-xs-12">
+        <p class="form-control-static">{$user['openid']}</p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">正式会员到期日期</label>
+      <div class="col-sm-9 col-xs-12">
+        <p class="form-control-static">
+          <?php echo $user['expiretime'] ? date('Y-m-d H:i:s', $user['expiretime']) : '未开通会员'; ?>
+        </p>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">充值天数</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="days" class="form-control" value="" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <div style="text-align: center;">
+          <button class=" btn btn-primary" name="submit" value="submit" type="submit" id='submit'>
+            确认充值
+          </button>
+          <button class=" btn btn-danger" type="button" onclick="dostopvip()">
+            撤销会员
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<script>
+  function dostopvip() {
+    $("#stopvip").val('1')
+    $('#submit').click()
+  }
+</script>
+
+{template 'common/footer'}

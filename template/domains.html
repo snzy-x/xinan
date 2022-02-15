@@ -1,0 +1,47 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>功能说明</h4>
+    <p id="helptext">
+      由于此功能经常在其他公司的平台进行宣传推广，很容易被封域名。同时一些场景需要提供个性化域名支持，因此添加了DIY自定义域名功能。
+    </p>
+    <p>
+      DIY域名有两种模式：指定域名模式、泛解析域名模式。
+    </p>
+    <p>指定域名填写格式：“http://abc.com”或“https://a.bc.com”。泛解析域名填写格式：
+      “http://*.abc.com”或“https://*.a.bc.com”（必须以*.开头）。请严格按照格式填写！结尾不需要带“/”。</p>
+    <p>指定域名下，所有的链接都将按照指定的域名生成。泛解析域名将对每个链接生成使用不同的子域名，在此填写的域名请务必考虑防止与现有域名发生冲突。请前往自己的域名服务商将自定义域名A记录解析到微擎服务器IP。此项不填写则使用默认域名。
+    </p>
+
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">默认链接域名</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="domain" class="form-control" value="{php echo $config['domain']}" />
+        <span class="help-block">注：必填。生成链接默认使用的域名。请注意域名填写规范。运营过程中修改此项，已生成的链接不受影响而改变。</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">正式会员链接域名</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="vipdomain" class="form-control" value="{php echo $config['vipdomain']}" />
+        <span class="help-block">注：选填项目。设置此项目后，正式会员生成的链接将使用此域名。如果不设置此项，自动使用默认域名。运营过程中修改此项，已生成的链接不受影响而改变。</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

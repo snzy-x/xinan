@@ -1,0 +1,100 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>模块使用帮助</h4>
+    <p id="helptext">输入对应广告位的ID即可打开相应广告位，如果不开启此广告位留空即可。</p>
+    <p id="helptext">我们也提供激活流量主资格服务，价格实惠。详情可联系交流群内管理员。</p>
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">插件状态</label>
+      <div class="col-sm-9 col-xs-12">
+        {if $buy_promotion}
+        <p class="form-control-static text-success">可使用</p>
+        {else}
+        <p class="text-danger">未购买<a target="_blank" href="https://s.w7.cc/module-29129.html"
+            class="btn btn-primary">前往安装</a></p>
+        {/if}
+      </div>
+    </div>
+    {if $buy_promotion}
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">正式会员是否显示横幅广告</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="tag1">
+          <input type="radio" name="vipshow" id="tag1" value="1" {if $config['promotion']['vipshow']} checked {/if}> 展示
+        </label>
+        <label class="radio-inline" for="tag2">
+          <input type="radio" name="vipshow" id="tag2" value="" {if !$config['promotion']['vipshow']} checked {/if}>
+          隐藏
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">首页横幅广告位ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="index" placeholder="adunit-****" class="form-control"
+          value="{php echo $config['promotion']['index']}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">各列表页横幅广告位ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="list" placeholder="adunit-****" class="form-control"
+          value="{php echo $config['promotion']['list']}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">链接详情页横幅广告位ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="linkdetail" placeholder="adunit-****" class="form-control"
+          value="{php echo $config['promotion']['linkdetail']}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">智慧链接中转页横幅广告位ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="jump" placeholder="adunit-****" class="form-control"
+          value="{php echo $config['promotion']['jump']}" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">正式会员是否需要观看视频</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="tag1">
+          <input type="radio" name="vipvideo" id="tag1" value="1" {if $config['promotion']['vipvideo']} checked {/if}>
+          必须
+        </label>
+        <label class="radio-inline" for="tag2">
+          <input type="radio" name="vipvideo" id="tag2" value="" {if !$config['promotion']['vipvideo']} checked {/if}>
+          不须要
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">看视频才可创建链接广告位ID</label>
+      <div class="col-sm-9 col-xs-12">
+        <input type="text" name="create" placeholder="adunit-****" class="form-control"
+          value="{php echo $config['promotion']['create']}" />
+        <span class="help-block">注：看视频才可创建链接的功能谨慎开启，因为这是个不合规的设定，可能被暂停流量主权限。</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交
+        </button>
+      </div>
+    </div>
+    {/if}
+  </form>
+</div>
+
+{template 'common/footer'}

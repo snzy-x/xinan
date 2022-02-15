@@ -1,0 +1,56 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>功能说明</h4>
+    <p id="helptext">
+      为了防止运营过程中，用户提交某些恶意非法信息导致运营方产生连带责任，因此有必要对用户提交内容进行筛选审查。注意，开启此页面功能，会增加链接创建时间，也不排除出现误判的可能（可以引导用户更换相关词汇和图片）。
+    </p>
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">文本内容筛查</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="sensitivetext1">
+          <input type="radio" name="sensitivetext" id="sensitivetext1" value="" {if empty($config['sensitive']['text'])}
+            checked {/if}>
+          关闭
+        </label>
+        <label class="radio-inline" for="sensitivetext2">
+          <input type="radio" name="sensitivetext" id="sensitivetext2" value="1" {if
+            !empty($config['sensitive']['text'])} checked {/if}>
+          开启
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-xs-12 col-sm-3 col-md-2 control-label">图片内容筛查</label>
+      <div class="col-sm-9 col-xs-12">
+        <label class="radio-inline" for="sensitiveimg1">
+          <input type="radio" name="sensitiveimg" id="sensitiveimg1" value="" {if empty($config['sensitive']['img'])}
+            checked {/if}>
+          关闭
+        </label>
+        <label class="radio-inline" for="sensitiveimg2">
+          <input type="radio" name="sensitiveimg" id="sensitiveimg2" value="1" {if !empty($config['sensitive']['img'])}
+            checked {/if}>
+          开启
+        </label>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交设置
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}

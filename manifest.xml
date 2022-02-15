@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns="http://www.we7.cc" versionCode="0.8,1.0">
+	<application setting="true">
+		<name><![CDATA[微信智慧外链接致富版]]></name>
+		<identifie><![CDATA[baiban_wxlinks]]></identifie>
+		<version><![CDATA[1.5.2]]></version>
+		<type><![CDATA[services]]></type>
+		<ability><![CDATA[外界环境点击直接跳转微信指定界面]]></ability>
+		<description><![CDATA[可选择微信号、微信群、公众号、视频号等微信内部应用]]></description>
+		<author><![CDATA[资源共享站www.6g-wo.cn ]]></author>
+		<url><![CDATA[http://www.6g-wo.cn/]]></url>
+	</application>
+
+	<platform>
+		<subscribes>
+			<message type="text" />
+			<message type="miniprogrampage" />
+		</subscribes>
+
+		<handles>
+		</handles>
+
+		<rule embed="false" /> 
+		<card embed="false" />
+		<oauth type="1" />
+		
+		<supports>
+			<item type="wxapp" />
+		</supports>
+		<plugins>
+			<item name="baiban_wxlinks_plugin_onekey" />
+			<item name="baiban_h5tomini_plugin_promotion" />
+			<item name="baiban_wxlinks_plugin_uniwxq" />
+			<item name="baiban_wxlinks_plugin_uniwxh" />
+			<item name="baiban_wxlinks_plugin_unigzh" />
+			<item name="baiban_wxlinks_plugin_unisph" />
+			<item name="baiban_wxlinks_plugin_uniqywx" />
+			<item name="baiban_wxlinks_plugin_promotion" />
+			<item name="baiban_wxlinks_plugin_unigzhwz" />
+			<item name="baiban_wxlinks_plugin_sensitive" />
+			<item name="baiban_wxlinks_plugin_grxcx" />
+			<item name="baiban_wxlinks_plugin_copywords" />
+		</plugins>
+	</platform>
+
+	<bindings>
+		<menu>
+			<entry title="Banner管理" do="banners" state="state" direct="false"/>
+			<entry title="会员管理" do="users" state="state" direct="false"/>
+			<entry title="链接管理" do="links" state="state" direct="false"/>
+			<entry title="密钥管理" do="cdkeys" state="state" direct="false"/>
+			<entry title="智慧链接" do="unilinks" state="state" direct="false"/>
+			<entry title="一键授权" do="onekey" state="state" direct="false"/>
+			<entry title="付费权益" do="premiums" state="state" direct="false"/>
+			<entry title="自定义域名" do="domains" state="state" direct="false"/>
+			<entry title="广告设置" do="adv" state="state" direct="false"/>
+			<entry title="场景自动识别" do="compat" state="state" direct="false"/>
+			<entry title="超短链接" do="short" state="state" direct="false"/>
+			<entry title="流量主设置" do="promotion" state="state" direct="false"/>
+			<entry title="敏感内容过滤" do="sensitive" state="state" direct="false"/>
+		</menu>
+	</bindings>
+
+	<permissions>
+	</permissions>
+
+	<install><![CDATA[
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_banners` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL DEFAULT '0',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `image` varchar(255) NOT NULL DEFAULT '',
+  `url` varchar(255) NOT NULL DEFAULT '',
+  `enable` tinyint(1) NOT NULL DEFAULT '1',
+  `weigh` int(11) NOT NULL DEFAULT '0',
+  `createtime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_cdkeys` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `cdkey` char(20) NOT NULL DEFAULT '0',
+  `days` int(11) NOT NULL DEFAULT '0',
+  `createtime` int(11) NOT NULL DEFAULT '0',
+  `usetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `type` enum('小程序','个人小程序','公众号','微信号','微信群','视频号','企业微信','公众号文章','任意网址') NOT NULL DEFAULT '小程序',
+  `wxappid` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `return` varchar(300) NOT NULL DEFAULT '',
+  `desc` varchar(100) NOT NULL DEFAULT '',
+  `btn_title` varchar(100) NOT NULL DEFAULT '',
+  `app_top` varchar(200) NOT NULL DEFAULT '',
+  `app_text` varchar(200) NOT NULL DEFAULT '',
+  `message_img` varchar(200) NOT NULL DEFAULT '',
+  `copy_words` varchar(200) NOT NULL DEFAULT '',
+  `path` varchar(100) NOT NULL DEFAULT '',
+  `query` varchar(1024) NOT NULL DEFAULT '',
+  `openlink` varchar(100) NOT NULL DEFAULT '',
+  `domain` varchar(100) NOT NULL DEFAULT '',
+  `share_title` varchar(100) NOT NULL DEFAULT '',
+  `views` int(11) NOT NULL DEFAULT '0',
+  `arrives` int(11) NOT NULL DEFAULT '0',
+  `createtime` int(11) NOT NULL DEFAULT '0',
+  `updatetime` int(11) NOT NULL DEFAULT '0',
+  `expiretime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_platform` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL DEFAULT '0',
+  `component_appid` varchar(50) NOT NULL DEFAULT '',
+  `component_appsecret` varchar(50) NOT NULL DEFAULT '',
+  `component_token` varchar(50) NOT NULL DEFAULT '',
+  `component_key` varchar(50) NOT NULL DEFAULT '',
+  `component_verify_ticket` varchar(150) NOT NULL DEFAULT '',
+  `component_access_token` varchar(250) NOT NULL DEFAULT '',
+  `component_expire_time` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL,
+  `nickname` varchar(50) NOT NULL DEFAULT '',
+  `avatar` varchar(250) NOT NULL DEFAULT '',
+  `channel` enum('微信公众号','微信小程序') NOT NULL DEFAULT '微信小程序',
+  `openid` varchar(50) NOT NULL DEFAULT '',
+  `mobile` varchar(11) NOT NULL DEFAULT '',
+  `password` varchar(32) NOT NULL DEFAULT '',
+  `wxapps` int(11) NOT NULL DEFAULT '0',
+  `links` int(11) NOT NULL DEFAULT '0',
+  `config` varchar(15000) NOT NULL DEFAULT '',
+  `createtime` int(11) NOT NULL DEFAULT '0',
+  `expiretime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=271 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_visit` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL DEFAULT '0',
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `wxappid` int(11) NOT NULL DEFAULT '0',
+  `linkid` int(11) NOT NULL DEFAULT '0',
+  `views` int(11) NOT NULL DEFAULT '0',
+  `arrives` int(11) NOT NULL DEFAULT '0',
+  `date` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=216 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+
+CREATE TABLE IF NOT EXISTS `ims_baiban_wxlinks_wxapps` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uniacid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `type` enum('小程序','个人小程序') NOT NULL DEFAULT '小程序',
+  `appid` varchar(50) NOT NULL DEFAULT '',
+  `secret` varchar(50) NOT NULL DEFAULT '',
+  `orid` varchar(50) NOT NULL DEFAULT '',
+  `links` int(11) NOT NULL DEFAULT '0',
+  `views` int(11) NOT NULL DEFAULT '0',
+  `arrives` int(11) NOT NULL DEFAULT '0',
+  `authorizer_access_token` varchar(250) NOT NULL DEFAULT '',
+  `authorizer_refresh_token` varchar(150) NOT NULL DEFAULT '',
+  `authorizer_expire_time` int(11) NOT NULL DEFAULT '0',
+  `createtime` int(11) NOT NULL DEFAULT '0',
+  `updatetime` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=DYNAMIC;
+
+]]></install>
+	<uninstall><![CDATA[DROP TABLE IF EXISTS `ims_baiban_wxlinks_banners`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_cdkeys`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_links`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_platform`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_users`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_visit`;
+DROP TABLE IF EXISTS `ims_baiban_wxlinks_wxapps`;
+]]></uninstall>
+	<upgrade><![CDATA[ru_rpgrade.php]]></upgrade>
+
+</manifest>

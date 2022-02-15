@@ -1,0 +1,165 @@
+{template 'common/header'}
+<div class="col-md-12 panel" id="settings">
+  <div role="alert" class="alert alert-warning alert-dismissible fade in">
+    <button aria-label="Close" data-dismiss="alert" class="close" type="button">
+      <span aria-hidden="true">×</span>
+    </button>
+    <h4>功能说明！！请仔细观看下方说明！！！不要不看说明就去问怎么用。</h4>
+    <p id="helptext">
+      用户添加微信小程序默认需要填写appid与appsecret，现在我们提供了一种更安全便捷的模式，通过微信开放平台来实现一键授权添加、无需手动填写繁琐的配置项，也能打消客户疑虑。
+    </p>
+    <p>
+      使用此功能需要注册开通微信开放平台（<a
+        href="https://open.weixin.qq.com/">https://open.weixin.qq.com/</a>）。注册登录后，在“管理中心”菜单中创建“第三方平台”！创建参数需要跟下方填写内容保持一致。如果下方是输入框，则根据实际情况输入。如果下方直接展示的内容，则根据提示填写，或复制相应的内容填写到开放平台参数项目中即可。
+    </p>
+    <p>
+      【重要】需要设置微信小程序的消息推送配置项！微信后台设置地址：开发管理-开发设置-消息推送。设置填写项<a
+        href="{$_W['siteroot']}web/index.php?c=account&a=post&&uniacid={$_W['uniacid']}&account_type=4" target="_blank"
+        style="text-decoration: underline;">参考点击这里</a></a>。切记要选择加密模式为明文模式；数据格式为XML，不要选择JSON。
+    </p>
+    <p>
+      我们是目前应用市场内首家支持一键授权功能的外链应用。希望大家可以积极去应用市场给我们好评支持！
+    </p>
+  </div>
+  <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+    <div class="panel panel-default">
+      <div class="panel-heading">平台基本信息</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">平台基本类型</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              平台型服务商
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">选择权限</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              仅需勾选两项：小程序权限-帐号管理权限 、小程序权限-获取URL Scheme权限
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">第三方平台APPID</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="component_appid" class="form-control"
+              value="{php echo $platform['component_appid']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">第三方平台APPSECRET</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="component_appsecret" class="form-control"
+              value="{php echo $platform['component_appsecret']}" />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">授权登录相关</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">登录授权的发起页域名</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$_SERVER['HTTP_HOST']}
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">授权测试公众号/小程序列表</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              此处如实填写，需要用于测试的小程序原始ID。原始ID为gh_开头的字符串。
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">授权事件接收URL</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$_W['siteroot']}app/index.php?i={$_W['uniacid']}&c=entry&a=wxapp&do=platform&m=baiban_wxlinks
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">授权后实现业务</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">消息校验Token</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="component_token" class="form-control"
+              value="{php echo $platform['component_token']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">消息加解密Key</label>
+          <div class="col-sm-9 col-xs-12">
+            <input type="text" name="component_key" class="form-control"
+              value="{php echo $platform['component_key']}" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">消息与事件接收URL</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$_W['siteroot']}app/index.php?i={$_W['uniacid']}&c=entry&a=wxapp&do=notify&m=baiban_wxlinks&appid=/$APPID$
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">小程序服务器域名(可不填)</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$_SERVER['HTTP_HOST']}
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">小程序业务域名(可不填)</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$_SERVER['HTTP_HOST']}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">其他</div>
+      <div class="panel-body">
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">白名单IP地址列表</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              如实填写服务器外网IP
+            </p>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-xs-12 col-sm-3 col-md-2 control-label">开放平台状态</label>
+          <div class="col-sm-9 col-xs-12">
+            <p class="form-control-static">
+              {$status}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="hidden" name="token" value="{$_W['token']}" />
+        <hr />
+        <button class="center-block btn btn-primary" name="submit" value="submit" type="submit">
+          提交参数（每次修改都要等待1~10分钟等待生效，非必要勿随意改动）
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+{template 'common/footer'}
